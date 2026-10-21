@@ -1,0 +1,6 @@
+@ChallengeHAPSA.Api_HostAddress = http://localhost:5104
+
+GET {{ChallengeHAPSA.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

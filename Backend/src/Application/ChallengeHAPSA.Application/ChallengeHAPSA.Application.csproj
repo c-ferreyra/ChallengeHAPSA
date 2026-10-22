@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\ChallengeHAPSA.Domain.Common\ChallengeHAPSA.Domain.Common.csproj" />
+    <ProjectReference Include="..\ChallengeHAPSA.Application.Ports\ChallengeHAPSA.Application.Ports.csproj" />
+  </ItemGroup>
+
 </Project>

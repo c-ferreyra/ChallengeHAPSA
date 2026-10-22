@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\ChallengeHAPSA.Application.Ports\ChallengeHAPSA.Application.Ports.csproj" />
+    <ProjectReference Include="..\..\Application\ChallengeHAPSA.Application\ChallengeHAPSA.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper\ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper.csproj" />
+    <ProjectReference Include="..\ChallengeHAPSA.Api.DataContracts\ChallengeHAPSA.Api.DataContracts.csproj" />
   </ItemGroup>
 
 </Project>

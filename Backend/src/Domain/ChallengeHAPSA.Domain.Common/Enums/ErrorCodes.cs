@@ -9,9 +9,12 @@ namespace ChallengeHAPSA.Domain.Common.Enums
 
         // 1 - 100: Example
         [Display(Name = "El nombre indicado para la <entidad> ya esta en uso")]
-        EXAMPLE_NAME_IN_USE = 1,
+        HORSE_NAME_IN_USE = 1,
 
         [Display(Name = "El nombre indicado para la <entidad> no esta permitido")]
-        EXAMPLE_NAME_NOT_ALLOWED = 2,
+        HORSE_NAME_NOT_ALLOWED = 2,
+
+        [Display(Name = "Este caballo ya esta deshabilitado")]
+        HORSE_ALREADY_DISABLED = 3,
     }
 }

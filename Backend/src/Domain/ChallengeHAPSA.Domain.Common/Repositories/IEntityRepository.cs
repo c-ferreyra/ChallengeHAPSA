@@ -1,5 +1,5 @@
 ﻿using ChallengeHAPSA.Domain.Common.Entities;
-using System.Linq.Expressions;
+using ChallengeHAPSA.Domain.Common.Specifications;
 
 namespace ChallengeHAPSA.Domain.Common.Repositories
 {
@@ -7,22 +7,26 @@ namespace ChallengeHAPSA.Domain.Common.Repositories
         where T : Entity<TK>
         where TK : struct
     {
-        // Obtener todos los registros
-        Task<IEnumerable<T>> GetAllAsync();
+        Task Create(T entity);
 
-        // Obtener por ID
-        Task<T?> GetByIdAsync(TK id);
+        Task Update(T entity);
 
-        // Buscar con condiciones (filtrado)
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<T> Get(TK id);
 
-        // Agregar una nueva entidad
-        Task AddAsync(T entity);
+        IQueryable<T> QueryBuilder();
 
-        // Actualizar una entidad existente
-        void Update(T entity);
+        Task<T> FirstOrDefaultAsync(IQueryable<T> query);
 
-        // Eliminar una entidad
-        void Remove(T entity);
+        Task<T> FirstOrDefaultAsync(ISpecification<T> specification);
+
+        Task Remove(TK id);
+
+        Task<T> SingleOrDefaultAsync(IQueryable<T> query);
+
+        Task<T> SingleOrDefaultAsync(ISpecification<T> specification);
+
+        Task<bool> AnyAsync(IQueryable<T> query);
+
+        Task<bool> AnyAsync(ISpecification<T> specification);
     }
 }

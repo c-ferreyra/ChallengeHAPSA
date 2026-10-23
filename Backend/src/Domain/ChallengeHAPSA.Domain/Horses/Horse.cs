@@ -6,7 +6,7 @@ namespace ChallengeHAPSA.Domain.Horses
 {
     public class Horse : Entity
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
         public DateTime CreationDate { get; set; }
         public bool IsActive { get; private set; }
 
@@ -25,11 +25,23 @@ namespace ChallengeHAPSA.Domain.Horses
 
         public static Result<Horse> Create(string name)
         {
-            // validacion random de ejemplo
-            if (name == "asdasd123")
-                return ErrorCodes.HORSE_NAME_NOT_ALLOWED;
+            var validation = ValidateName(name);
+
+            if (validation.IsFailure)
+                return validation.Error!;
 
             return new Horse(name);
+        }
+
+        public Result Rename(string name)
+        {
+            var validation = ValidateName(name);
+
+            if (validation.IsFailure)
+                return validation;
+
+            this.Name = name;
+            return Result.Success();
         }
 
         public Result Disable()
@@ -44,6 +56,15 @@ namespace ChallengeHAPSA.Domain.Horses
         public Result Enable()
         {
             this.IsActive = true;
+            return Result.Success();
+        }
+
+        private static Result ValidateName(string name)
+        {
+            // validacion random de ejemplo
+            if (name == "asdasd123")
+                return ErrorCodes.HORSE_NAME_NOT_ALLOWED;
+
             return Result.Success();
         }
     }

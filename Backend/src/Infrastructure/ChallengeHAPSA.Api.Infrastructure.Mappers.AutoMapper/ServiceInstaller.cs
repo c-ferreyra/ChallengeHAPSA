@@ -1,8 +1,7 @@
 using System.Reflection;
-using ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Api.Infrastructure.Mappers.AutoMapper
+namespace ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper
 {
     public static class ServiceInstaller
     {

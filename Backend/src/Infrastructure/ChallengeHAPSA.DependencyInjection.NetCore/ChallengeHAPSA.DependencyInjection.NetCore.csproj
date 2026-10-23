@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChallengeHAPSA.Repository.EFCore\ChallengeHAPSA.Repository.EFCore.csproj" />
+    <ProjectReference Include="..\ChallengeHAPSA.Busses.MediatR\ChallengeHAPSA.Busses.MediatR.csproj" />
+    <ProjectReference Include="..\ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper\ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\Application\ChallengeHAPSA.Application\ChallengeHAPSA.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

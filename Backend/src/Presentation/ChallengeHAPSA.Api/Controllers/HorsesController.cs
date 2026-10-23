@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper;
 using ChallengeHAPSA.Api.DataContracts.DTOs;
 using ChallengeHAPSA.Application.Commands;
+using ChallengeHAPSA.Domain.Common;
+using ChallengeHAPSA.Application.Queries;
 
 namespace ChallengeHAPSA.Api.Controllers
 {
@@ -22,11 +24,11 @@ namespace ChallengeHAPSA.Api.Controllers
         }
 
         // GET: api/<HorsesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public async Task<IEnumerable<Result<HorseDTO>> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/<HorsesController>/5
         [HttpGet("{id}")]
@@ -39,16 +41,19 @@ namespace ChallengeHAPSA.Api.Controllers
         public async Task<ActionResult> Create([FromBody] CreateHorseInputDTO inputDTO)
         {
             var command = this.mapper.Map<CreateHorseCommand>(inputDTO);
-
             var result = await this.commandBus.Send(command);
 
             return this.Ok(result);
         }
 
-        // PUT api/<HorsesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateHorseInputDTO inputDTO)
         {
+            var command = this.mapper.Map<UpdateHorseCommand>(inputDTO);
+            command.Id = id;    
+
+            var result = await this.commandBus.Send(command);
+            return this.Ok(result);
+
         }
 
         // DELETE api/<HorsesController>/5

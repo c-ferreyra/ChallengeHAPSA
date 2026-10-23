@@ -5,6 +5,6 @@ namespace ChallengeHAPSA.Domain.Horses
 {
     public interface IHorseRepository : IEntityRepository<Horse, Guid>
     {
-        Task<bool> NameInUse(string name);
+        Task<bool> NameInUse(string name, Guid? excludeId = null);
     }
 }

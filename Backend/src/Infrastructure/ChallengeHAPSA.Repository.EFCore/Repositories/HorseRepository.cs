@@ -11,10 +11,14 @@ namespace ChallengeHAPSA.Repository.EFCore.Repositories
         {
         }
 
-        public Task<bool> NameInUse(string name)
+        public Task<bool> NameInUse(string name, Guid? excludeId = null)
         {
-            return this.QueryBuilder().AnyAsync(x => x.Name == name);
-        }
+            var query = this.QueryBuilder().Where(x => x.Name == name);
 
+            if (excludeId.HasValue)
+                query = query.Where(x => x.Id != excludeId.Value);
+
+            return query.AnyAsync();
+        }
     }
 }

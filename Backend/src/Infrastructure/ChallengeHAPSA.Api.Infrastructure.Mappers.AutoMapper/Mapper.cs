@@ -1,7 +1,7 @@
 using IAutoMapper = AutoMapper.IMapper;
 using IMapper = ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper.IMapper;
 
-namespace Api.Infrastructure.Mappers.AutoMapper
+namespace ChallengeHAPSA.Api.Infrastructure.Mappers.AutoMapper
 {
     internal sealed class Mapper : IMapper
     {

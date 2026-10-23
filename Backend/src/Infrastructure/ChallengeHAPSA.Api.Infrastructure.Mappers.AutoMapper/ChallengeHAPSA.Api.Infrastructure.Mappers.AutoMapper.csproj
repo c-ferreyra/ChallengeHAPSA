@@ -10,4 +10,9 @@
     <PackageReference Include="AutoMapper" Version="16.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\ChallengeHAPSA.Application\ChallengeHAPSA.Application.csproj" />
+    <ProjectReference Include="..\..\Presentation\ChallengeHAPSA.Api.DataContracts\ChallengeHAPSA.Api.DataContracts.csproj" />
+  </ItemGroup>
+
 </Project>

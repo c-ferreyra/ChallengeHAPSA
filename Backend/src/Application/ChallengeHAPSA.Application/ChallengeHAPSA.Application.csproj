@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\ChallengeHAPSA.Domain.Common\ChallengeHAPSA.Domain.Common.csproj" />
+    <ProjectReference Include="..\..\Domain\ChallengeHAPSA.Domain\ChallengeHAPSA.Domain.csproj" />
     <ProjectReference Include="..\ChallengeHAPSA.Application.Ports\ChallengeHAPSA.Application.Ports.csproj" />
   </ItemGroup>
 

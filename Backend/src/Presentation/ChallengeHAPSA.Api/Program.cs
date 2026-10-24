@@ -18,6 +18,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    // la UI solo consume el documento que ya genera Microsoft.AspNetCore.OpenApi
+    app.UseSwaggerUI(options =>
+        options.SwaggerEndpoint("/openapi/v1.json", "ChallengeHAPSA API v1"));
 }
 
 app.UseHttpsRedirection();

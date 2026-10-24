@@ -32,7 +32,7 @@ namespace ChallengeHAPSA.Application.Commands
 
             if (result.IsFailure)
             {
-                return result.Error;
+                return result.Error!;
             }
 
             await this.horseRepository.Update(horse);

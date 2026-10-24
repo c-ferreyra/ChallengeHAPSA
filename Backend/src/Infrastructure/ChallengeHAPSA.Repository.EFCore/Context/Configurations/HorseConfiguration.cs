@@ -19,11 +19,11 @@ namespace ChallengeHAPSA.Repository.EFCore.Context.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            _ = builder.Property(h => h.CreationDate)
+            _ = builder.Property(h => h.Birthday)
                 .IsRequired()
                 .HasColumnType("datetime2");
 
-            _ = builder.Property(h => h.IsActive)
+            _ = builder.Property(h => h.Status)
                 .IsRequired()
                 .HasDefaultValue(true);
 

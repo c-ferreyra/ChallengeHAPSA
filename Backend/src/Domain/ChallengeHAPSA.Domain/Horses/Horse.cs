@@ -7,8 +7,8 @@ namespace ChallengeHAPSA.Domain.Horses
     public class Horse : Entity
     {
         public string Name { get; private set; }
-        public DateTime CreationDate { get; set; }
-        public bool IsActive { get; private set; }
+        public DateTime Birthday { get; private set; }
+        public bool Status { get; private set; }
 
         // ctor privado para respetar un poco mejor ddd (invariants al crear)
         private Horse()
@@ -16,21 +16,21 @@ namespace ChallengeHAPSA.Domain.Horses
 
         }
 
-        private Horse(string name)
+        private Horse(string name, DateTime birthday)
         {
             this.Name = name;
-            this.CreationDate = DateTime.Now;
-            this.IsActive = true;
+            this.Birthday = birthday;
+            this.Status = true;
         }
 
-        public static Result<Horse> Create(string name)
+        public static Result<Horse> Create(string name, DateTime birthday)
         {
             var validation = ValidateName(name);
 
             if (validation.IsFailure)
                 return validation.Error!;
 
-            return new Horse(name);
+            return new Horse(name, birthday);
         }
 
         public Result Rename(string name)
@@ -46,16 +46,16 @@ namespace ChallengeHAPSA.Domain.Horses
 
         public Result Disable()
         {
-            if (!this.IsActive)
+            if (!this.Status)
                 return ErrorCodes.HORSE_ALREADY_DISABLED;
 
-            this.IsActive = false;
+            this.Status = false;
             return Result.Success();
         }
 
         public Result Enable()
         {
-            this.IsActive = true;
+            this.Status = true;
             return Result.Success();
         }
 

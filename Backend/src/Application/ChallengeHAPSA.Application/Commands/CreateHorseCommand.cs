@@ -6,5 +6,6 @@ namespace ChallengeHAPSA.Application.Commands
     public class CreateHorseCommand : ICommand<Result<Guid>>
     {
         public string Name { get; set; }
+        public DateTime Birthday { get; set; }
     }
 }

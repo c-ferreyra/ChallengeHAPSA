@@ -1,5 +1,7 @@
 using ChallengeHAPSA.Application.Ports.Commands;
+using ChallengeHAPSA.Application.Ports.Queries;
 using ChallengeHAPSA.Busses.Commands.MediatR;
+using ChallengeHAPSA.Busses.Queries.MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChallengeHAPSA.Busses.MediatR
@@ -10,6 +12,7 @@ namespace ChallengeHAPSA.Busses.MediatR
         {
             // el bus no tiene estado, asi que transient alcanza
             _ = serviceCollection.AddTransient<ICommandBus, CommandBus>();
+            _ = serviceCollection.AddTransient<IQueryBus, QueryBus>();
         }
     }
 }

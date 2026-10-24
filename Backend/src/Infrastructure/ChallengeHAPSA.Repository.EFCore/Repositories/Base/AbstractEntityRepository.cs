@@ -25,32 +25,28 @@ namespace ChallengeHAPSA.Repository.EFCore.Repositories.Base
             _ = await this.Context.SaveChangesAsync();
         }
 
-        public virtual Task<T> Get(TK id) => this.Context.Set<T>().FirstOrDefaultAsync(e => e.Id.Equals(id));
+        public virtual Task<T?> Get(TK id) => this.Context.Set<T>().FirstOrDefaultAsync(e => e.Id.Equals(id));
 
         public async Task Update(T entity)
         {
+            _ = this.Context.Update(entity);
             _ = await this.Context.SaveChangesAsync();
         }
 
         public IQueryable<T> QueryBuilder() => this.Context.Set<T>();
 
-        public Task<T> FirstOrDefaultAsync(IQueryable<T> query) => query.FirstOrDefaultAsync();
+        public Task<T?> FirstOrDefaultAsync(IQueryable<T> query) => query.FirstOrDefaultAsync();
 
-        public Task<T> FirstOrDefaultAsync(ISpecification<T> specification) => this.Context.Set<T>().FirstOrDefaultAsync(specification.ToExpression());
+        public Task<T?> FirstOrDefaultAsync(ISpecification<T> specification) => this.Context.Set<T>().FirstOrDefaultAsync(specification.ToExpression());
 
-        public async Task Remove(TK id) => this.Context.Remove(await this.Get(id));
+        public Task<T?> SingleOrDefaultAsync(IQueryable<T> query) => query.SingleOrDefaultAsync();
 
-        public Task<T> SingleOrDefaultAsync(IQueryable<T> query) => query.SingleOrDefaultAsync();
-
-        public Task<T> SingleOrDefaultAsync(ISpecification<T> specification) => this.Context.Set<T>().SingleOrDefaultAsync(specification.ToExpression());
+        public Task<T?> SingleOrDefaultAsync(ISpecification<T> specification) => this.Context.Set<T>().SingleOrDefaultAsync(specification.ToExpression());
 
         public Task<bool> AnyAsync(IQueryable<T> query) => query.AnyAsync();
 
-        public async Task SaveChangesAsync()
-        {
-            _ = await this.Context.SaveChangesAsync();
-        }
-
         public Task<bool> AnyAsync(ISpecification<T> specification) => this.Context.Set<T>().AnyAsync(specification.ToExpression());
+
+        public Task<List<T>> ListAsync(IQueryable<T> query) => query.ToListAsync();
     }
 }

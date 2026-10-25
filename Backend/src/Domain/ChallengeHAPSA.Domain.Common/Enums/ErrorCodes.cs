@@ -19,5 +19,8 @@ namespace ChallengeHAPSA.Domain.Common.Enums
 
         [Display(Name = "Caballo no encontrado")]
         HORSE_NOT_FOUND = 4,
+
+        [Display(Name = "Este caballo ya esta habilitado")]
+        HORSE_ALREADY_ENABLED = 5,
     }
 }

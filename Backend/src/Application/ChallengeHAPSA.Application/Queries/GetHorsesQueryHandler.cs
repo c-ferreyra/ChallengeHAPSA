@@ -31,6 +31,12 @@ namespace ChallengeHAPSA.Application.Queries
                 spec = spec is null ? nameSpec : spec.And(nameSpec);
             }
 
+            if (request.Type is not null)
+            {
+                var typeSpec = new HorseOfTypeSpecification(request.Type.Value);
+                spec = spec is null ? typeSpec : spec.And(typeSpec);
+            }
+
             var query = this._horseRepository.QueryBuilder();
 
             if (spec is not null)

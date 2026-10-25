@@ -57,6 +57,9 @@ namespace ChallengeHAPSA.Domain.Horses
 
         public Result Enable()
         {
+            if (this.Status)
+                return ErrorCodes.HORSE_ALREADY_ENABLED;
+
             this.Status = true;
             return Result.Success();
         }

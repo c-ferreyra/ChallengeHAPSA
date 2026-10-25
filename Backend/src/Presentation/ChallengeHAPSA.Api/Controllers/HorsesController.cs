@@ -8,6 +8,7 @@ using ChallengeHAPSA.Application.Ports.Queries;
 using ChallengeHAPSA.Domain.Common;
 using ChallengeHAPSA.Application.Queries;
 using ChallengeHAPSA.Api.Helpers;
+using ChallengeHAPSA.Domain.Horses;
 
 namespace ChallengeHAPSA.Api.Controllers
 {
@@ -29,13 +30,17 @@ namespace ChallengeHAPSA.Api.Controllers
 
         // GET: api/<HorsesController>
         [HttpGet]
-        public async Task<ActionResult> Get([FromQuery] string? name, [FromQuery] HorseStatusFilter status = HorseStatusFilter.Enabled)
+        public async Task<ActionResult> Get(
+            [FromQuery] string? name,
+            [FromQuery] HorseTypeDTO? type,
+            [FromQuery] HorseStatusFilter status = HorseStatusFilter.Enabled)
         {
             // el default Enabled mantiene el requisito de listar solo habilitados;
             // All se traduce a Status null, que el handler interpreta como sin filtro
             var query = new GetHorsesQuery
             {
                 Name = name,
+                Type = type is null ? null : this.mapper.Map<HorseType>(type.Value),
                 Status = status switch
                 {
                     HorseStatusFilter.Enabled => true,
@@ -97,6 +102,15 @@ namespace ChallengeHAPSA.Api.Controllers
         public async Task<ActionResult> Disable(Guid id)
         {
             var command = new DisableHorseCommand { Id = id };
+            var result = await this.commandBus.Send(command);
+
+            return this.ToActionResult(result);
+        }
+
+        [HttpPatch("{id}/enable")]
+        public async Task<ActionResult> Enable(Guid id)
+        {
+            var command = new EnableHorseCommand { Id = id };
             var result = await this.commandBus.Send(command);
 
             return this.ToActionResult(result);

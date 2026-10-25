@@ -1,5 +1,6 @@
 ﻿using ChallengeHAPSA.Application.Ports.Queries;
 using ChallengeHAPSA.Domain.Common;
+using ChallengeHAPSA.Domain.Horses;
 
 namespace ChallengeHAPSA.Application.Queries
 {
@@ -7,5 +8,6 @@ namespace ChallengeHAPSA.Application.Queries
     {
         public bool? Status { get; set; }
         public string? Name { get; set; }
+        public HorseType? Type { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace ChallengeHAPSA.Api.Helpers
             ErrorCodes.HORSE_NOT_FOUND => StatusCodes.Status404NotFound,
             ErrorCodes.HORSE_NAME_IN_USE => StatusCodes.Status409Conflict,
             ErrorCodes.HORSE_ALREADY_DISABLED => StatusCodes.Status409Conflict,
+            ErrorCodes.HORSE_ALREADY_ENABLED => StatusCodes.Status409Conflict,
             ErrorCodes.HORSE_NAME_NOT_ALLOWED => StatusCodes.Status400BadRequest,
             ErrorCodes.UNKNOWN_ERROR => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest

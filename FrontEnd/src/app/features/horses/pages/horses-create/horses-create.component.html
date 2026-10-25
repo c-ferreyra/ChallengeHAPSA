@@ -1,0 +1,54 @@
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Alta de caballo</h1>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <form class="row g-3 align-items-start mb-4" [formGroup]="horseForm" (ngSubmit)="onSave()" novalidate>
+    <div class="col-12 col-sm-6 col-md-4">
+      <label for="name" class="form-label">Nombre</label>
+      <input
+        id="name"
+        type="text"
+        class="form-control"
+        formControlName="name"
+        placeholder="Nombre del caballo"
+        [class.is-invalid]="isInvalid('name')"
+      />
+      <div class="invalid-feedback">
+        {{ horseForm.get('name')?.hasError('maxlength') ? 'El nombre no puede superar los 100 caracteres.' : 'Es necesario indicar un nombre.' }}
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+      <label for="birthday" class="form-label">Fecha de nacimiento</label>
+      <input
+        id="birthday"
+        type="date"
+        class="form-control"
+        formControlName="birthday"
+        [max]="maxBirthday"
+        [class.is-invalid]="isInvalid('birthday')"
+      />
+      <div class="invalid-feedback">Es necesario indicar la fecha de nacimiento.</div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+      <label for="type" class="form-label">Tipo</label>
+      <select id="type" class="form-select" formControlName="type" [class.is-invalid]="isInvalid('type')">
+        <option value="" disabled>Seleccioná un tipo</option>
+        <option value="racehorse">De carrera</option>
+        <option value="stallion">Padrillo</option>
+      </select>
+      <div class="invalid-feedback">Es necesario indicar el tipo.</div>
+    </div>
+
+    <div class="col-12 d-flex gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="saving">
+        {{ saving ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="saving">Cancelar</button>
+    </div>
+  </form>
+</section>

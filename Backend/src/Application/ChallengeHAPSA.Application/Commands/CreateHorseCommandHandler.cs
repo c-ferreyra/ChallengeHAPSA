@@ -5,7 +5,7 @@ using ChallengeHAPSA.Domain.Horses;
 
 namespace ChallengeHAPSA.Application.Commands
 {
-    internal sealed class CreateHorseCommandHandler : ICommandHandler<CreateHorseCommand, Result<Guid>>
+    public sealed class CreateHorseCommandHandler : ICommandHandler<CreateHorseCommand, Result<Guid>>
     {
         private readonly IHorseRepository horseRepository;
 

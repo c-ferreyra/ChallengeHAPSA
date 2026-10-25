@@ -65,9 +65,8 @@ namespace ChallengeHAPSA.Domain.Horses
         }
 
         private static Result ValidateName(string name)
-        {
-            // validacion random de ejemplo
-            if (name == "asdasd123")
+        {            
+            if (String.IsNullOrEmpty(name))
                 return ErrorCodes.HORSE_NAME_NOT_ALLOWED;
 
             return Result.Success();

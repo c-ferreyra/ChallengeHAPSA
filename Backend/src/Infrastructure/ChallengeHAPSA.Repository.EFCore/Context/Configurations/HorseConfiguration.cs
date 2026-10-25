@@ -27,6 +27,9 @@ namespace ChallengeHAPSA.Repository.EFCore.Context.Configurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            _ = builder.Property(h => h.Type)
+                .IsRequired();
+
             // respalda IHorseRepository.NameInUse
             _ = builder.HasIndex(h => h.Name).IsUnique();
         }

@@ -23,7 +23,7 @@ namespace ChallengeHAPSA.Application.Commands
                 return ErrorCodes.HORSE_NAME_IN_USE;
             }
 
-            var result = Horse.Create(request.Name, request.Birthday);
+            var result = Horse.Create(request.Name, request.Birthday, request.Type);
 
             if (result.IsFailure)
             {

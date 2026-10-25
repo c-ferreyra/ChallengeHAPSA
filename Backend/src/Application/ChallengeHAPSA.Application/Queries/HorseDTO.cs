@@ -1,4 +1,6 @@
-﻿namespace ChallengeHAPSA.Application.Queries
+﻿using ChallengeHAPSA.Domain.Horses;
+
+namespace ChallengeHAPSA.Application.Queries
 {
     public class HorseDTO
     {
@@ -6,5 +8,6 @@
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
         public bool Status { get; set; }
+        public HorseType Type { get; set; }
     }
 }

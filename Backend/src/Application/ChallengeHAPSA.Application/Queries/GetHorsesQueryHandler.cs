@@ -25,6 +25,12 @@ namespace ChallengeHAPSA.Application.Queries
                 null => null,
             };
 
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                var nameSpec = new HorseNameContainsSpecification(request.Name.Trim());
+                spec = spec is null ? nameSpec : spec.And(nameSpec);
+            }
+
             var query = this._horseRepository.QueryBuilder();
 
             if (spec is not null)
@@ -39,7 +45,8 @@ namespace ChallengeHAPSA.Application.Queries
                 Id = h.Id,
                 Name = h.Name,
                 Birthday = h.Birthday,
-                Status = h.Status
+                Status = h.Status,
+                Type = h.Type
             }).ToList();
         }
     }

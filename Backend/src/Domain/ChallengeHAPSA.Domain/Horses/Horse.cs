@@ -9,6 +9,7 @@ namespace ChallengeHAPSA.Domain.Horses
         public string Name { get; private set; }
         public DateTime Birthday { get; private set; }
         public bool Status { get; private set; }
+        public HorseType Type { get; private set; }
 
         // ctor privado para respetar un poco mejor ddd (invariants al crear)
         private Horse()
@@ -16,21 +17,22 @@ namespace ChallengeHAPSA.Domain.Horses
 
         }
 
-        private Horse(string name, DateTime birthday)
+        private Horse(string name, DateTime birthday, HorseType type)
         {
             this.Name = name;
             this.Birthday = birthday;
+            this.Type = type;
             this.Status = true;
         }
 
-        public static Result<Horse> Create(string name, DateTime birthday)
+        public static Result<Horse> Create(string name, DateTime birthday, HorseType type)
         {
             var validation = ValidateName(name);
 
             if (validation.IsFailure)
                 return validation.Error!;
 
-            return new Horse(name, birthday);
+            return new Horse(name, birthday, type);
         }
 
         public Result Rename(string name)

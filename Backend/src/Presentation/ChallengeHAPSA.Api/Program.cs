@@ -1,5 +1,8 @@
 using ChallengeHAPSA.Api.Helpers;
 using ChallengeHAPSA.DependencyInjection.NetCore;
+using System.Text.Json.Serialization;
+
+const string FrontEndCorsPolicy = "FrontEnd";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.InstallDependencies(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+    options.AddPolicy(FrontEndCorsPolicy, policy =>
+        policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [])
+            .AllowAnyHeader()
+            .AllowAnyMethod()));
+
+// enums como string en el json (type: "Racehorse" en vez de 0)
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddMediatR();
@@ -24,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(FrontEndCorsPolicy);
 
 app.UseAuthorization();
 

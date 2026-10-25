@@ -11,5 +11,9 @@ namespace ChallengeHAPSA.Api.DataContracts.DTOs
         // cae en default(DateTime) y [Required] lo deja pasar
         [Required(ErrorMessage = "Es necesario indicar la fecha de nacimiento")]
         public DateTime? Birthday { get; set; }
+
+        // nullable por el mismo motivo que Birthday: sin el ?, un type ausente cae en Racehorse
+        [Required(ErrorMessage = "Es necesario indicar el tipo")]
+        public HorseTypeDTO? Type { get; set; }
     }
 }

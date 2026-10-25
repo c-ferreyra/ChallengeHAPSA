@@ -29,11 +29,22 @@ namespace ChallengeHAPSA.Api.Controllers
 
         // GET: api/<HorsesController>
         [HttpGet]
-        public async Task<ActionResult> Get([FromQuery] bool? status)
+        public async Task<ActionResult> Get([FromQuery] string? name, [FromQuery] HorseStatusFilter status = HorseStatusFilter.Enabled)
         {
-            // con bool? el default del parametro no aplica: la clave ausente bindea a null.
-            // El ?? true mantiene el requisito de listar solo habilitados por defecto.
-            var result = await this.queryBus.Send(new GetHorsesQuery { Status = status ?? true });
+            // el default Enabled mantiene el requisito de listar solo habilitados;
+            // All se traduce a Status null, que el handler interpreta como sin filtro
+            var query = new GetHorsesQuery
+            {
+                Name = name,
+                Status = status switch
+                {
+                    HorseStatusFilter.Enabled => true,
+                    HorseStatusFilter.Disabled => false,
+                    _ => null,
+                },
+            };
+
+            var result = await this.queryBus.Send(query);
 
             if (result.IsFailure)
             {

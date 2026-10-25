@@ -28,7 +28,8 @@ namespace ChallengeHAPSA.Application.Queries
                 Id = horse.Id,
                 Name = horse.Name,
                 Birthday = horse.Birthday,
-                Status = horse.Status
+                Status = horse.Status,
+                Type = horse.Type
             };
         }
     }

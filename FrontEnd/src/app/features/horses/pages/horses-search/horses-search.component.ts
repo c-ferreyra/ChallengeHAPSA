@@ -1,94 +1,149 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { Horse, HorseStatus, HorseType } from '../../models/horse.model';
+import { ApiResult, HorseDto, HorseStatus, HorseType } from '../../models/horse.model';
 import { HorsesService } from '../../services/horses.service';
-
-const STATUS_LABELS: Record<HorseStatus, string> = {
-  enabled: 'Habilitado',
-  disabled: 'Deshabilitado'
-};
+import { HttpErrorResponse } from '@angular/common/http';
 
 const TYPE_LABELS: Record<HorseType, string> = {
   racehorse: 'De carrera',
   stallion: 'Padrillo'
 };
 
-// TODO: remove once the search endpoint is wired to the backend.
-const DUMMY_HORSES: Horse[] = [
-  { id: 1, name: 'Furia Roja', birthDate: '2019-03-12', status: 'enabled', type: 'racehorse' },
-  { id: 2, name: 'Trueno del Sur', birthDate: '2016-07-04', status: 'enabled', type: 'stallion' },
-  { id: 3, name: 'Estrella Fugaz', birthDate: '2021-11-28', status: 'disabled', type: 'racehorse' }
-];
+// type '' = todos los tipos
+const DEFAULT_FILTERS = { name: '', status: 'enabled' as HorseStatus, type: '' as HorseType | '' };
 
 @Component({
   selector: 'app-horses-search',
   templateUrl: './horses-search.component.html',
   styleUrls: ['./horses-search.component.scss']
 })
-export class HorsesSearchComponent {
-  filtersForm: FormGroup = this.fb.group({
-    name: [''],
-    status: [''],
-    type: ['']
-  });
+export class HorsesSearchComponent implements OnInit {
+  filtersForm: FormGroup = this.fb.group(DEFAULT_FILTERS);
 
-  horses: Horse[] = DUMMY_HORSES;
+  horses: HorseDto[] = [];
   loading = false;
   searched = false;
+  errorMessage: string | null = null;
 
-  constructor(private readonly fb: FormBuilder, private readonly horsesService: HorsesService) {}
+  // modal de detalle
+  detailOpen = false;
+  detailLoading = false;
+  detailHorse: HorseDto | null = null;
+  detailError: string | null = null;
+  updatingStatus = false;
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly horsesService: HorsesService,
+    private readonly router: Router
+  ) {}
+
+  // al entrar se listan los habilitados (DEFAULT_FILTERS)
+  ngOnInit(): void {
+    this.onSearch();
+  }
 
   onSearch(): void {
     const { name, status, type } = this.filtersForm.value;
 
     this.loading = true;
+    this.errorMessage = null;
 
     this.horsesService
-      .search({
-        name: name || null,
-        status: (status || null) as HorseStatus | null,
-        type: (type || null) as HorseType | null
-      })
+      .getAll(name.trim(), status, type || undefined)
       .subscribe({
         next: (horses) => {
           this.horses = horses;
           this.loading = false;
           this.searched = true;
         },
-        error: () => {
+        error: (response: HttpErrorResponse) => {
           this.horses = [];
           this.loading = false;
           this.searched = true;
+          this.errorMessage = (response.error as ApiResult | null)?.error?.description ?? 'No se pudo obtener el listado.';
         }
       });
   }
 
   onClear(): void {
-    this.filtersForm.reset({ name: '', status: '', type: '' });
-    this.horses = [];
-    this.searched = false;
+    this.filtersForm.reset(DEFAULT_FILTERS);
+    this.onSearch();
   }
 
-  onView(horse: Horse): void {
-    // TODO: navigate to the horse detail screen once it exists.
-    console.log('View horse', horse);
+  onView(horse: HorseDto): void {
+    this.detailOpen = true;
+    this.detailLoading = true;
+    this.detailHorse = null;
+    this.detailError = null;
+
+    this.horsesService.getById(horse.id).subscribe({
+      next: (detail) => {
+        this.detailHorse = detail;
+        this.detailLoading = false;
+      },
+      error: (response: HttpErrorResponse) => {
+        this.detailLoading = false;
+        this.detailError = (response.error as ApiResult | null)?.error?.description ?? 'No se pudo obtener el caballo.';
+      }
+    });
+  }
+
+  @HostListener('document:keydown.escape')
+  onCloseDetail(): void {
+    if (this.updatingStatus) {
+      return;
+    }
+
+    this.detailOpen = false;
+  }
+
+  onDisable(): void {
+    this.changeStatus(false);
+  }
+
+  onEnable(): void {
+    this.changeStatus(true);
+  }
+
+  private changeStatus(enable: boolean): void {
+    const horse = this.detailHorse;
+    const action = enable ? 'habilitar' : 'deshabilitar';
+
+    if (!horse || !confirm(`¿${enable ? 'Habilitar' : 'Deshabilitar'} a ${horse.name}?`)) {
+      return;
+    }
+
+    this.updatingStatus = true;
+    this.detailError = null;
+
+    const request$ = enable ? this.horsesService.enable(horse.id) : this.horsesService.disable(horse.id);
+
+    request$.subscribe({
+      next: () => {
+        this.updatingStatus = false;
+        this.detailHorse = { ...horse, status: enable };
+        // refresca la grilla para que refleje el cambio segun el filtro actual
+        this.onSearch();
+      },
+      error: (response: HttpErrorResponse) => {
+        this.updatingStatus = false;
+        this.detailError = (response.error as ApiResult | null)?.error?.description ?? `No se pudo ${action} el caballo.`;
+      }
+    });
   }
 
   onCreate(): void {
-    // TODO: navigate to the horse creation screen once it exists.
-    console.log('Create horse');
+    this.router.navigate(['/horses/create']);
   }
 
-  statusLabel(status: HorseStatus): string {
-    return STATUS_LABELS[status];
+  statusLabel(status: boolean): string {
+    return status ? 'Habilitado' : 'Deshabilitado';
   }
 
   typeLabel(type: HorseType): string {
     return TYPE_LABELS[type];
-  }
-
-  trackByHorseId(_index: number, horse: Horse): number {
-    return horse.id;
   }
 }

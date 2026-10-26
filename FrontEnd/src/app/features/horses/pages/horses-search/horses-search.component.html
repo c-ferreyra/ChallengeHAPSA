@@ -13,7 +13,7 @@
     <div class="col-12 col-sm-6 col-md-4">
       <label for="status" class="form-label">Estado</label>
       <select id="status" class="form-select" formControlName="status">
-        <option value="">Todos</option>
+        <option value="all">Todos</option>
         <option value="enabled">Habilitado</option>
         <option value="disabled">Deshabilitado</option>
       </select>
@@ -48,9 +48,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let horse of horses; trackBy: trackByHorseId">
+        <tr *ngFor="let horse of horses">
           <td>{{ horse.name }}</td>
-          <td>{{ horse.birthDate | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ horse.birthday | date: 'dd/MM/yyyy' }}</td>
           <td>{{ statusLabel(horse.status) }}</td>
           <td>{{ typeLabel(horse.type) }}</td>
           <td>
@@ -87,3 +87,57 @@
     </table>
   </div>
 </section>
+
+<ng-container *ngIf="detailOpen">
+  <div class="modal d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="horseDetailTitle" (click)="onCloseDetail()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="horseDetailTitle" class="modal-title fs-5">Detalle del caballo</h2>
+          <button type="button" class="btn-close" aria-label="Cerrar" (click)="onCloseDetail()"></button>
+        </div>
+
+        <div class="modal-body">
+          <p *ngIf="detailLoading" class="text-muted mb-0">Cargando...</p>
+
+          <div *ngIf="detailError" class="alert alert-danger mb-0">{{ detailError }}</div>
+
+          <dl *ngIf="detailHorse" class="row mb-0">
+            <dt class="col-sm-5">Nombre</dt>
+            <dd class="col-sm-7">{{ detailHorse.name }}</dd>
+
+            <dt class="col-sm-5">Fecha de nacimiento</dt>
+            <dd class="col-sm-7">{{ detailHorse.birthday | date: 'dd/MM/yyyy' }}</dd>
+
+            <dt class="col-sm-5">Estado</dt>
+            <dd class="col-sm-7">{{ statusLabel(detailHorse.status) }}</dd>
+
+            <dt class="col-sm-5">Tipo</dt>
+            <dd class="col-sm-7 mb-0">{{ typeLabel(detailHorse.type) }}</dd>
+          </dl>
+        </div>
+
+        <div class="modal-footer">
+          <ng-container *ngIf="detailHorse">
+            <button
+              *ngIf="detailHorse.status; else enableButton"
+              type="button"
+              class="btn btn-danger"
+              (click)="onDisable()"
+              [disabled]="updatingStatus"
+            >
+              {{ updatingStatus ? 'Deshabilitando...' : 'Deshabilitar' }}
+            </button>
+            <ng-template #enableButton>
+              <button type="button" class="btn btn-success" (click)="onEnable()" [disabled]="updatingStatus">
+                {{ updatingStatus ? 'Habilitando...' : 'Habilitar' }}
+              </button>
+            </ng-template>
+          </ng-container>
+          <button type="button" class="btn btn-outline-secondary" (click)="onCloseDetail()" [disabled]="updatingStatus">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</ng-container>

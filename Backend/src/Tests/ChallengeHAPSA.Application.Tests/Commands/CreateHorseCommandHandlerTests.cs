@@ -2,7 +2,6 @@
 using ChallengeHAPSA.Application.Commands;
 using Moq;
 using ChallengeHAPSA.Domain.Common.Enums;
-using System.Reflection.Metadata;
 
 namespace ChallengeHAPSA.Application.Tests.Commands
 {

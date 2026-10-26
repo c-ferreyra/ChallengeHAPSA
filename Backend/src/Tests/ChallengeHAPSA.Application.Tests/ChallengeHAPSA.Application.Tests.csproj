@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Application\ChallengeHAPSA.Application\ChallengeHAPSA.Application.csproj" />
     <ProjectReference Include="..\..\Domain\ChallengeHAPSA.Domain\ChallengeHAPSA.Domain.csproj" />
   </ItemGroup>

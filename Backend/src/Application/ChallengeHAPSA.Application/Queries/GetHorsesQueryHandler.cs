@@ -6,7 +6,7 @@ using ChallengeHAPSA.Domain.Horses.Specifications;
 
 namespace ChallengeHAPSA.Application.Queries
 {
-    internal sealed class GetHorsesQueryHandler : IQueryHandler<GetHorsesQuery, Result<IEnumerable<HorseDTO>>>
+    public sealed class GetHorsesQueryHandler : IQueryHandler<GetHorsesQuery, Result<IEnumerable<HorseDTO>>>
     {
         private readonly IHorseRepository _horseRepository;
 
